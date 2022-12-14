@@ -13,16 +13,12 @@ $Dev=Import-Csv -Path C:\temp\list_of_user_ids.csv
 $Devices1=$Dev.UserId
 $Devices=ForEach($ids in $Devices1){
 Get-AzureADUserRegisteredDevice -ObjectId $ids}
-#Write-Host($Devices)
 ForEach($Device in $Devices){
-  #Write-Host($Device.DeviceId)
   $user=Get-AzureADDeviceRegisteredUser -ObjectId $Device.ObjectId
   $UserId=$user.ObjectId
   if($UserId){
   [array]$mgu=(Get-MgUser -UserId $UserId).OnPremisesExtensionAttributes.ExtensionAttribute13}
   If ($user) {
-  #$ext=$mgu[0].ToString()
-  #Write-Host($ext)
    $Properties = @{
    DeviceName=$Device.DisplayName
    UserName=$user.DisplayName
